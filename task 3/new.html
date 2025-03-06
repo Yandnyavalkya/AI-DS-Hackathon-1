@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.5s;
+        }
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            text-align: center;
+        }
+        .question-card {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .confetti {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .thumbs-down {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h2>Quiz</h2>
+        <form id="quiz-form">
+            <div class="question-card">
+                <p>1. What is the capital of France?</p>
+                <label><input type="radio" name="q1" value="Paris"> Paris</label>
+                <label><input type="radio" name="q1" value="London"> London</label>
+                <label><input type="radio" name="q1" value="Berlin"> Berlin</label>
+                <label><input type="radio" name="q1" value="Madrid"> Madrid</label>
+            </div>
+            <div class="question-card">
+                <p>2. What is 2 + 2?</p>
+                <label><input type="radio" name="q2" value="3"> 3</label>
+                <label><input type="radio" name="q2" value="4"> 4</label>
+                <label><input type="radio" name="q2" value="5"> 5</label>
+                <label><input type="radio" name="q2" value="6"> 6</label>
+            </div>
+            <div class="question-card">
+                <p>3. Who wrote 'Hamlet'?</p>
+                <label><input type="radio" name="q3" value="Shakespeare"> Shakespeare</label>
+                <label><input type="radio" name="q3" value="Dickens"> Dickens</label>
+                <label><input type="radio" name="q3" value="Austen"> Austen</label>
+                <label><input type="radio" name="q3" value="Hemingway"> Hemingway</label>
+            </div>
+            <div class="question-card">
+                <p>4. What is the largest planet in the solar system?</p>
+                <label><input type="radio" name="q4" value="Earth"> Earth</label>
+                <label><input type="radio" name="q4" value="Mars"> Mars</label>
+                <label><input type="radio" name="q4" value="Jupiter"> Jupiter</label>
+                <label><input type="radio" name="q4" value="Saturn"> Saturn</label>
+            </div>
+            <div class="question-card">
+                <p>5. What is the square root of 64?</p>
+                <label><input type="radio" name="q5" value="6"> 6</label>
+                <label><input type="radio" name="q5" value="7"> 7</label>
+                <label><input type="radio" name="q5" value="8"> 8</label>
+                <label><input type="radio" name="q5" value="9"> 9</label>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="result"></p>
+    </div>
+    <div class="thumbs-down">👎</div>
+    <script>
+        document.getElementById("quiz-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let score = 0;
+            const answers = { q1: "Paris", q2: "4", q3: "Shakespeare", q4: "Jupiter", q5: "8" };
+            for (let key in answers) {
+                const selected = document.querySelector(`input[name="${key}"]:checked`);
+                if (selected && selected.value === answers[key]) {
+                    score++;
+                }
+            }
+            document.getElementById("result").innerText = `Your score: ${score}/5`;
+            if (score === 5) {
+                document.body.style.backgroundColor = "green";
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            } else if (score < 3) {
+                document.body.style.backgroundColor = "red";
+                document.querySelector(".thumbs-down").style.display = "block";
+                setTimeout(() => {
+                    document.querySelector(".thumbs-down").style.display = "none";
+                }, 2000);
+            } else {
+                document.body.style.backgroundColor = "green";
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0"></script>
+</body>
+</html>
